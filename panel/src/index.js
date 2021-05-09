@@ -1,3 +1,4 @@
+
 import { createApp, h } from 'vue'
 
 import Api from "./config/api.js";
@@ -22,7 +23,9 @@ const app = createApp({
     window.panel.plugins.created.forEach((plugin) => plugin(this));
     this.$store.dispatch("content/init");
   },
-  render: () => h(App)
+  render() {
+    return h(App)
+  }
 });
 
 // Vue.config.productionTip = false;

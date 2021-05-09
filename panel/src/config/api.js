@@ -3,18 +3,11 @@ import Api from "@/api/index.js";
 export default {
   install(app) {
 
-    app.config.globalProperties.$api = window.panel.$api = Api({
+    const api = Api({
       config: {
         endpoint: window.panel.$urls.api,
-        onComplete: (requestId) => {
-          window.panel.$api.requests = window.panel.$api.requests.filter(value => {
-            return value !== requestId;
-          });
-
-          if (app.$api.requests.length === 0) {
-            window.panel.$store.dispatch("isLoading", false);
-          }
-        },
+        requests: [],
+        ping: null,
         onError: error => {
           if (window.panel.$config.debug) {
             window.console.error(error);
@@ -42,23 +35,36 @@ export default {
           options.headers["x-csrf"] = window.panel.$system.csrf;
 
           return options;
-        },
-        onStart: (requestId, silent = false) => {
-          if (silent === false) {
-            window.panel.$store.dispatch("isLoading", true);
-          }
-
-          window.panel.$api.requests.push(requestId);
-        },
-        onSuccess: () => {
-          clearInterval(app.$api.ping);
-          window.panel.$api.ping = setInterval(window.panel.$api.auth.user, 5 * 60 * 1000);
         }
-      },
-      ping: null,
-      requests: []
+      }
     });
 
-    window.panel.$api.ping = setInterval(window.panel.$api.auth.user, 5 * 60 * 1000);
+    api.config.onComplete = (requestId) => {
+      api.config.requests = api.config.requests.filter(value => {
+        return value !== requestId;
+      });
+
+      if (api.config.requests.length === 0) {
+        window.panel.$store.dispatch("isLoading", false);
+      }
+    };
+
+    api.config.onStart = (requestId, silent = false) => {
+      if (silent === false) {
+        window.panel.$store.dispatch("isLoading", true);
+      }
+
+      api.config.requests.push(requestId);
+    };
+
+    api.config.onSuccess = () => {
+      clearInterval(api.config.ping);
+      api.config.ping = setInterval(api.auth.user, 5 * 60 * 1000);
+    }
+
+    api.config.onSuccess();
+
+    app.config.globalProperties.$api = window.panel.$api = api;
+
   }
 };

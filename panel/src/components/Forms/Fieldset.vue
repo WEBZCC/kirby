@@ -24,7 +24,6 @@
               v-bind="field"
               @input="$emit('input', value, field, fieldName)"
               @focus="$emit('focus', $event, field, fieldName)"
-              @invalid="($invalid, $v) => onInvalid($invalid, $v, field, fieldName)"
               @submit="$emit('submit', $event, field, fieldName)"
             />
             <k-box v-else theme="negative">
@@ -66,11 +65,6 @@ export default {
         return {};
       }
     }
-  },
-  data() {
-    return {
-      errors: {}
-    };
   },
   methods: {
     /**
@@ -127,13 +121,6 @@ export default {
 
       return result;
 
-    },
-    onInvalid($invalid, $v, field, fieldName) {
-      this.errors[fieldName] = $v;
-      this.$emit("invalid", this.errors);
-    },
-    hasErrors() {
-      return Object.keys(this.errors).length;
     }
   }
 };

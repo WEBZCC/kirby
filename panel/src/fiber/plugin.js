@@ -22,7 +22,7 @@ export default {
     });
 
     document.addEventListener("fiber.finish", () => {
-      if (app.$api.requests.length === 0) {
+      if (window.panel.$api.requests.length === 0) {
         window.panel.$store.dispatch("isLoading", false);
       }
     });

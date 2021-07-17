@@ -515,6 +515,11 @@ abstract class ModelWithContent extends Model
         return $this;
     }
 
+    public function toSafeString(string $template = null): string
+    {
+        return $this->toSafeString($template, [], '', 'safeTemplate');
+    }
+
     /**
      * String template builder
      *
@@ -523,13 +528,13 @@ abstract class ModelWithContent extends Model
      * @param string $fallback Fallback for tokens in the template that cannot be replaced
      * @return string
      */
-    public function toString(string $template = null, array $data = [], string $fallback = ''): string
+    public function toString(string $template = null, array $data = [], string $fallback = '', string $handler = 'template'): string
     {
         if ($template === null) {
             return $this->id();
         }
 
-        $result = Str::template($template, array_replace([
+        $result = Str::$handler($template, array_replace([
             'kirby'             => $this->kirby(),
             'site'              => is_a($this, 'Kirby\Cms\Site') ? $this : $this->site(),
             static::CLASS_ALIAS => $this

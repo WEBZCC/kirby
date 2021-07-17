@@ -648,6 +648,21 @@ class StrTest extends TestCase
     }
 
     /**
+     * @covers ::safeTemplate
+     */
+    public function testSafeTemplate()
+    {
+        $original = 'This is a {{ test }} with {< html >} and {{ normal }} text.';
+        $expected = 'This is a awesome Test with <b>HTML</b> and &lt;b&gt;normal&lt;/b&gt; text.';
+
+        $this->assertSame($expected, Str::safeTemplate($original, [
+            'test'   => 'awesome Test',
+            'html'   => '<b>HTML</b>',
+            'normal' => '<b>normal</b>'
+        ]));
+    }
+
+    /**
      * @covers ::short
      */
     public function testShort()

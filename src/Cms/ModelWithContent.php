@@ -517,7 +517,7 @@ abstract class ModelWithContent extends Model
 
     public function toSafeString(string $template = null): string
     {
-        return $this->toSafeString($template, [], '', 'safeTemplate');
+        return $this->toString($template, [], '', 'safeTemplate');
     }
 
     /**

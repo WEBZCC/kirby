@@ -57,10 +57,6 @@ export default ({ command }) => {
       }),
       pluginRewriteAll()
     ],
-    define: {
-      // Fix vuelidate error
-      "process.env.BUILD": JSON.stringify("production")
-    },
     build: {
       cssCodeSplit: false,
       rollupOptions: {

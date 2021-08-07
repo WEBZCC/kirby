@@ -189,7 +189,7 @@ export default {
 
     this.isEmpty = this.editor.isEmpty();
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.editor.destroy();
   },
   methods: {

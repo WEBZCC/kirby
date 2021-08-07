@@ -1,7 +1,6 @@
-import Vue from "vue";
 
 export default (name) => {
-  if (Vue.options.components[name] !== undefined) {
+  if (window.panel.$vue["_context"].components[name] !== undefined) {
     return true;
   }
 

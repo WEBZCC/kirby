@@ -11,25 +11,27 @@ const keep = (id, data) => {
 export default {
   namespaced: true,
 
-  state: {
-    /**
-     * ID of current model
-     */
-    current: null,
+  state() {
+    return {
+      /**
+       * ID of current model
+       */
+      current: null,
 
-    /**
-     * Object of models:
-     *  Key   => type/slug/language, e.g. pages/blog+a-blog-post/de
-     *  Value => Object of
-     *            - api: API endpoint
-     *            - originals: values as they are in the content file
-     *            - changes: values with unsaved changes
-     */
-    models: {},
+      /**
+       * Object of models:
+       *  Key   => type/slug/language, e.g. pages/blog+a-blog-post/de
+       *  Value => Object of
+       *            - api: API endpoint
+       *            - originals: values as they are in the content file
+       *            - changes: values with unsaved changes
+       */
+      models: {},
 
-    // whether form shall be disabled (e.g. for structure fields)
-    status: {
-      enabled: true
+      // whether form shall be disabled (e.g. for structure fields)
+      status: {
+        enabled: true
+      }
     }
   },
 

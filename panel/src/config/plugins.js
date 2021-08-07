@@ -1,12 +1,11 @@
-import store from "@/store/store.js";
 import section from "../mixins/section/section.js";
 
 export default {
   install(app) {
     let components = {};
 
-    for (var key in app.options.components) {
-      components[key] = app.options.components[key];
+    for (var key in app["_context"].components) {
+      components[key] = app["_context"].components[key];
     }
 
     let mixins = {
@@ -20,7 +19,7 @@ export default {
 
       // make sure component has something to show
       if (!options.template && !options.render && !options.extends) {
-        store.dispatch(
+        window.panel.$store.dispatch(
           "notification/error",
           `Neither template or render method provided nor extending a component when loading plugin component "${name}". The component has not been registered.`
         );
@@ -59,7 +58,7 @@ export default {
       }
 
       app.component(name, options);
-      components[name] = app.options.components[name];
+      components[name] = app["_context"].components[name];
     });
 
     /**

@@ -1,5 +1,3 @@
-import store from "@/store/store.js";
-
 export default {
   install(app) {
     app.config.errorHandler = error => {
@@ -7,7 +5,7 @@ export default {
         window.console.error(error);
       }
 
-      store.dispatch("notification/error", {
+      window.panel.$store.dispatch("notification/error", {
         message: error.message || "An error occurred. Please reload the Panel."
       });
     };
@@ -18,7 +16,7 @@ export default {
         window.console.error(notification + ": " + msg);
       }
 
-      store.dispatch(
+      window.panel.$store.dispatch(
         "error",
         notification + ". See the console for more information."
       );

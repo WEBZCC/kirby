@@ -5,7 +5,7 @@ export default {
     /**
      * Helper function for i18n strings
      */
-    app.$t = app.prototype.$t = window.panel.$t = (key, data, fallback = null) => {
+     app.config.globalProperties.$t = window.panel.$t = (key, data, fallback = null) => {
       if (typeof key !== "string") {
         return;
       }

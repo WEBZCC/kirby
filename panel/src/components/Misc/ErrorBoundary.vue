@@ -1,4 +1,6 @@
 <script>
+import { h } from 'vue'
+
 export default {
   data() {
     return {
@@ -13,7 +15,7 @@ export default {
     this.error = error;
     return false;
   },
-  render(h) {
+  render() {
     if (this.error) {
       if (this.$slots.error) {
         return this.$slots.error[0];

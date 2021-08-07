@@ -10,7 +10,7 @@ export default {
     dayjs.extend(customParseFormat);
     dayjs.extend(utc);
 
-    app.prototype.$library = {
+    app.config.globalProperties.$library = {
       autosize: autosize,
       dayjs: dayjs
     };

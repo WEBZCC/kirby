@@ -24,7 +24,6 @@
  * SOFTWARE.
  */
 
- import Vue from "vue";
  import clone from "../helpers/clone";
  import debounce from "../helpers/debounce";
  import { merge } from "../helpers/object";
@@ -96,17 +95,6 @@
    },
 
    /**
-    * Loads the Vue component for a
-    * Fiber view
-    *
-    * @param {string} name
-    * @returns {object}
-    */
-   component(name) {
-     return Vue.component(name);
-   },
-
-   /**
     * After a new view response is loaded
     * the props are all processed to set the
     * document title and language. The props are
@@ -134,9 +122,9 @@
        "$view"
      ].forEach((key) => {
        if (data[key] !== undefined) {
-         Vue.prototype[key] = window.panel[key] = data[key];
+        window.panel.$vue.config.globalProperties[key] = window.panel[key] = data[key];
        } else {
-         Vue.prototype[key] = data[key] = window.panel[key];
+        window.panel.$vue.config.globalProperties[key] = data[key] = window.panel[key];
        }
      });
 
@@ -368,9 +356,6 @@
      preserveScroll = false,
      preserveState = false
    } = {}) {
-     // resolve component
-     const component = await this.component(page.$view.component);
-
      // get all scroll regions
      page.scrollRegions = page.scrollRegions || [];
 
@@ -389,7 +374,7 @@
      data = this.data(data);
 
      // call and wait for the swap callback
-     await this.swap({ component, page: data, preserveState });
+     await this.swap({ page: data, preserveState });
 
      // reset scrolling if it should not be preserved
      if (!preserveScroll) {

@@ -1,18 +1,18 @@
 import Api from "@/api/index.js";
 
 export default {
-  install(Vue, store) {
+  install(app) {
 
-    Vue.prototype.$api = Vue.$api = Api({
+    app.config.globalProperties.$api = window.panel.$api = Api({
       config: {
         endpoint: window.panel.$urls.api,
         onComplete: (requestId) => {
-          Vue.$api.requests = Vue.$api.requests.filter(value => {
+          window.panel.$api.requests = window.panel.$api.requests.filter(value => {
             return value !== requestId;
           });
 
-          if (Vue.$api.requests.length === 0) {
-            store.dispatch("isLoading", false);
+          if (app.$api.requests.length === 0) {
+            window.panel.$store.dispatch("isLoading", false);
           }
         },
         onError: error => {
@@ -25,11 +25,11 @@ export default {
             error.code === 403 &&
             (error.message === "Unauthenticated" || error.key === "access.panel")
           ) {
-            Vue.prototype.$go("/logout");
+            window.panel.$go("/logout");
           }
         },
         onParserError: (result) => {
-          store.dispatch("fatal", result);
+          window.panel.$store.dispatch("fatal", result);
           throw new Error("The JSON response from the API could not be parsed");
         },
         onPrepare: (options) => {
@@ -45,20 +45,20 @@ export default {
         },
         onStart: (requestId, silent = false) => {
           if (silent === false) {
-            store.dispatch("isLoading", true);
+            window.panel.$store.dispatch("isLoading", true);
           }
 
-          Vue.$api.requests.push(requestId);
+          window.panel.$api.requests.push(requestId);
         },
         onSuccess: () => {
-          clearInterval(Vue.$api.ping);
-          Vue.$api.ping = setInterval(Vue.$api.auth.user, 5 * 60 * 1000);
+          clearInterval(app.$api.ping);
+          window.panel.$api.ping = setInterval(window.panel.$api.auth.user, 5 * 60 * 1000);
         }
       },
       ping: null,
       requests: []
     });
 
-    Vue.$api.ping = setInterval(Vue.$api.auth.user, 5 * 60 * 1000);
+    window.panel.$api.ping = setInterval(window.panel.$api.auth.user, 5 * 60 * 1000);
   }
 };

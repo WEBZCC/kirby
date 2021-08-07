@@ -1,4 +1,4 @@
-import { createVuePlugin } from "vite-plugin-vue2";
+import createVuePlugin from "@vitejs/plugin-vue";
 import pluginRewriteAll from "vite-plugin-rewrite-all";
 import postcssCsso from "postcss-csso";
 import postcssLogical from "postcss-logical";
@@ -45,7 +45,18 @@ export default ({ command }) => {
   };
 
   return {
-    plugins: [createVuePlugin(), pluginRewriteAll()],
+    plugins: [
+      createVuePlugin({
+        template: {
+          compilerOptions: {
+            compatConfig: {
+              MODE: 2
+            }
+          }
+        }
+      }),
+      pluginRewriteAll()
+    ],
     define: {
       // Fix vuelidate error
       "process.env.BUILD": JSON.stringify("production")
@@ -77,7 +88,7 @@ export default ({ command }) => {
       alias: [
           {
             find: "vue",
-            replacement: "vue/dist/vue.esm.js"
+            replacement: "@vue/compat"
           },
           {
             find: "@",

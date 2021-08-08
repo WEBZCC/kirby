@@ -287,7 +287,7 @@ class Page extends Model
                     ->filter('status', $page->status());
             }
 
-            return $siblings->filter('isReadable', true);
+            return $siblings->filter('isAccessible', true);
         };
 
         return [
